@@ -1,56 +1,102 @@
-# Welcome to your Expo app 👋
+# Secret Santa
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+Secret Santa è un'app mobile per organizzare un'edizione del Secret Santa
+tra amici. È sviluppata con Expo, React Native e TypeScript; il backend
+utilizza Supabase per PostgreSQL, autenticazione Google, Row Level Security
+(RLS) e funzioni server.
 
-## Get started
+## Requisiti
 
-1. Install dependencies
+- Node.js 20 o superiore
+- Docker Desktop avviato, per il database Supabase locale
+- Supabase CLI
+- Un development build Expo per le funzionalità native di autenticazione
+  Google; Expo Go non è sufficiente per l'app completa
 
-   ```bash
-   npm install
-   ```
-
-2. Start the app
-
-   ```bash
-   npx expo start
-   ```
-
-In the output, you'll find options to open the app in a
-
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
-
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Get a fresh project
-
-When you're ready, run:
+Installare le dipendenze del progetto con:
 
 ```bash
-npm run reset-project
+npm install
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+Creare il file `.env` a partire da
+[`.env.example`](.env.example) e inserire l'URL e la chiave anonima del
+progetto Supabase. Le variabili `EXPO_PUBLIC_*` sono pubbliche e non devono
+contenere segreti.
 
-### Other setup steps
+## Avvio dell'app
 
-- To set up ESLint for linting, run `npx expo lint`, or follow our guide on ["Using ESLint and Prettier"](https://docs.expo.dev/guides/using-eslint/)
-- If you'd like to set up unit testing, follow our guide on ["Unit Testing with Jest"](https://docs.expo.dev/develop/unit-testing/)
-- Learn more about the TypeScript setup in this template in our guide on ["Using TypeScript"](https://docs.expo.dev/guides/typescript/)
+Avviare il server di sviluppo Expo:
 
-## Learn more
+```bash
+npm start
+```
 
-To learn more about developing your project with Expo, look at the following resources:
+Sono disponibili anche i comandi per una piattaforma specifica:
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+```bash
+npm run android
+npm run ios
+npm run web
+```
 
-## Join the community
+Per Android e iOS è necessario usare un development build quando sono
+richiesti moduli nativi non inclusi in Expo Go.
 
-Join our community of developers creating universal apps.
+## Avvio del database locale
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+Con Docker Desktop in esecuzione, avviare i servizi Supabase locali dalla
+radice del progetto:
+
+```bash
+supabase start
+supabase status
+```
+
+Il comando `supabase status` mostra gli endpoint e le chiavi locali da
+riportare nel file `.env`. Per arrestare i servizi:
+
+```bash
+supabase stop
+```
+
+## Script npm
+
+| Script | Descrizione |
+| --- | --- |
+| `npm start` | Avvia Expo |
+| `npm run android` | Avvia Expo con il target Android |
+| `npm run ios` | Avvia Expo con il target iOS |
+| `npm run web` | Avvia Expo per il web |
+| `npm run lint` | Esegue ESLint tramite Expo |
+| `npm run typecheck` | Esegue il controllo dei tipi TypeScript |
+| `npm run format` | Formatta i file con Prettier |
+| `npm test` | Esegue i test Jest |
+
+## Struttura delle cartelle
+
+```text
+.
+├── assets/                 # Asset grafici dell'app
+├── docs/                   # Specifica, architettura e decisioni di sviluppo
+├── src/
+│   ├── app/                # Schermate e layout Expo Router
+│   ├── components/         # Componenti riutilizzabili
+│   ├── constants/          # Tema e costanti dell'app
+│   ├── features/           # Funzionalità organizzate per area
+│   ├── hooks/              # Hook condivisi
+│   ├── i18n/               # Testi localizzati
+│   ├── lib/                # Integrazioni e utility condivise
+│   └── types/              # Tipi dell'app
+├── test/                   # Supporto ai test
+├── app.json                # Configurazione Expo
+└── package.json            # Dipendenze e script npm
+```
+
+## Documentazione
+
+- [Specifica funzionale](docs/spec/functional-spec.md)
+- [Architettura](docs/architecture.md)
+- [Decisioni di sviluppo](docs/dev-decisions.md)
+- [Avanzamento del progetto](docs/PROGRESS.md)
+- [Istruzioni per Copilot](.github/copilot-instructions.md)
